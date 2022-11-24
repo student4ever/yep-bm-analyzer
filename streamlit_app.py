@@ -90,6 +90,7 @@ fig.update_layout(
         gridcolor = "white",
         gridwidth = 2,
         dtick=1,
+        range=[0, 5.5],
       ),
     ),
     paper_bgcolor = "white"
