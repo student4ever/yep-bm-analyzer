@@ -1,2 +1,4 @@
-vega-datasets
+streamlit-aggrid
 streamlit
+pandas
+click==8

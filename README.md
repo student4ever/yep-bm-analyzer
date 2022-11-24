@@ -1,10 +1,10 @@
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/streamlit/example-app-time-series-annotation/main)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/streamlit/example-app-interactive-table/main)
 
-# ⬇ Time series annotations
+# 🖱️ Interactive table app
 
-Learn how to add annotations in your time series visualisations! They are crucial to help your viewers gain more context on the patterns in your data.
+This app shows how you can use the [streamlit-aggrid](https://github.com/PablocFonseca/streamlit-aggrid) Streamlit component in an interactive way so as to display additional content based on user click.
 
-<img src="https://user-images.githubusercontent.com/7164864/191277048-c1078ae1-4975-4d9b-8275-823b45da53a5.png" width="600px"> </img>
+<img src ="https://user-images.githubusercontent.com/7164864/152407708-1f3394bd-a683-4520-8677-c94e3872bb22.png" width="400px"></img>
 
 ### Questions? Comments?
 
