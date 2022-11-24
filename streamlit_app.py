@@ -71,7 +71,11 @@ if st.checkbox("Plot befüllen", True):
 fig.update_layout(
     title = "Evaluierungsmatrix",
     font_size = 15,
-    showlegend = True,
+    # showlegend = True,
+    legend=dict(
+        orientation="h",
+        yanchor="top", y=-0.2,
+        xanchor="left", x=0.02),
     polar = dict(
       # bgcolor = "rgb(223, 223, 223)",
       angularaxis = dict(
