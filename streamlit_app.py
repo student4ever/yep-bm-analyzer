@@ -84,8 +84,8 @@ fig.update_layout(
         linecolor='black'
       ),
       radialaxis = dict(
-        side = "counterclockwise",
-        showline = True,
+        side = "clockwise",
+        showline = False,
         linewidth = 2,
         gridcolor = "white",
         gridwidth = 2,
