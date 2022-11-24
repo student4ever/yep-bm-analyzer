@@ -11,7 +11,7 @@ st.set_page_config(
 st.title("⚡ YEP | Geschäftsmodelle jenseits der reinen Energieversorgung")
 st.write(
     """
-    Diese App stellt die aus Sicht der YEP Arbeitsgruppe interessantesten Geschäftsmodelle interaktiv dar. 
+    Diese App stellt die aus Sicht der YEP Arbeitsgruppe 9 interessantesten Geschäftsmodelle interaktiv dar. 
     """
 )
 
@@ -22,7 +22,7 @@ sheet_name = "app_data"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
 data = pd.read_csv(url, index_col=[0])
-bm_to_plot = st.multiselect(label="Auswahl der Dazustellende Business Models", options=data.columns,
+bm_to_plot = st.multiselect(label="Auswahl der dazustellenden Business Models", options=data.columns,
                             default=data.columns[0])
 entries = data.index
 
