@@ -36,16 +36,16 @@ layout=go.Layout(
     paper_bgcolor='white',
     plot_bgcolor='white',
     yaxis={'side': 'right'},
-    autosize=False,
-    width=800,
-    height=800,
-    margin=go.layout.Margin(
-        l=50,
-        r=50,
-        b=50,
-        t=50,
-        pad=4
-    )
+    autosize=True,
+    # width=800,
+    # height=800,
+    # margin=go.layout.Margin(
+    #     l=50,
+    #     r=50,
+    #     b=50,
+    #     t=50,
+    #     pad=4
+    # )
 
 )
 
