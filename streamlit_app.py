@@ -65,8 +65,32 @@ for b in bm_to_plot:
           opacity=0.75,
         ))
 
-if st.checkbox("Plot befüllen", False):
+if st.checkbox("Plot befüllen", True):
     fig.update_traces(fill='toself')
+
+fig.update_layout(
+    title = "Evaluierungsmatrix",
+    font_size = 15,
+    showlegend = True,
+    polar = dict(
+      # bgcolor = "rgb(223, 223, 223)",
+      angularaxis = dict(
+        linewidth = 1,
+        showline=True,
+        linecolor='black'
+      ),
+      radialaxis = dict(
+        side = "counterclockwise",
+        showline = True,
+        linewidth = 2,
+        gridcolor = "white",
+        gridwidth = 2,
+        dtick=1,
+      ),
+    ),
+    paper_bgcolor = "white"
+)
+
 
 st.plotly_chart(fig, use_container_width=True)
 
