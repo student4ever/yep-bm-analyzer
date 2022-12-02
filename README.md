@@ -2,7 +2,6 @@
 
 # ⚡ Interactive YEP app
 
-This app shows how you can use the results of the 9. Working Group of the 3rd YEP cyclus in an interactive way so as 
-to display the results of the business models.  
+This app shows how you can use the results of the 9. Working Group of the 3rd YEP cyclus in an interactive way so as to display the results of the business models.  
 
 ### Questions? Comments?

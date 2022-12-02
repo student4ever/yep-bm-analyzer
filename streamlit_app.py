@@ -9,22 +9,89 @@ st.set_page_config(
     layout="centered", page_icon="⚡", page_title="Interactive YEP app"
 )
 st.title("⚡ YEP | Geschäftsmodelle jenseits der reinen Energieversorgung")
-st.write(
-    """
-    Diese App stellt die aus Sicht der YEP Arbeitsgruppe 9 interessantesten Geschäftsmodelle interaktiv dar. 
-    """
-)
 
 # Load the data
-# https://docs.google.com/spreadsheets/d/1ZRFcyil83dX7jwTFI37AS8zjvrwBinAMwQ8ZMkQnu8s/edit?usp=sharing
 sheet_id = "1ZRFcyil83dX7jwTFI37AS8zjvrwBinAMwQ8ZMkQnu8s"
+
+sheet_name = "app_text"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+total_text = pd.read_csv(url, index_col=[0], header=[0])
+
 sheet_name = "app_data"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+total_data = pd.read_csv(url, index_col=[0], decimal=",")
 
-data = pd.read_csv(url, index_col=[0])
-bm_to_plot = st.multiselect(label="Auswahl der dazustellenden Business Models", options=data.columns,
-                            default=data.columns[0])
-entries = data.index
+st.write("{}".format(total_text.loc["Introtext"].iloc[0]))
+
+name_use_case1 = total_data.index.name
+table_use_case1 = total_data.iloc[0:7]
+name_use_case2 = total_data.index[7]
+table_use_case2 = total_data.iloc[8:8+7]
+name_use_case3 = total_data.index[15]
+table_use_case3 = total_data.iloc[16:16+7]
+
+columns_with_text = total_data.columns.str.contains('Text_')
+number_columns = total_data.columns[~columns_with_text]
+text_columns = total_data.columns[columns_with_text]
+
+st.header("Interaktive Modellauswahl")
+
+tab1_1, tab1_2 = st.tabs(['Use Cases', 'Beschreibung'])
+
+use_cases = [name_use_case1, name_use_case2, name_use_case3]
+with tab1_1:
+    uc = st.radio(label="Auswahl des Use-Cases", options=use_cases)
+
+with tab1_2:
+    # with st.expander("Annahmen zum Use Case {}".format(uc)):
+
+    for u in use_cases:
+
+        txt_idx = pd.Index(
+            ["Case", "Beispielunternehmen", "Gründung", "Mitarbeiteranzahl", "Markt", "Shareholder Struktur",
+             "Wertschöpfungskette", "Umsatz", "Bestehende GM", "Umsatz Kundensegment",
+             "Know-how / Interne Expertise", "Bestehendes Kraftwerksportfolio", "Strategie des Unternehmens"])
+        uc_description = total_text.loc[txt_idx]
+        uc_description.columns = uc_description.loc["Case"]
+        uc_description = uc_description.iloc[1:].loc[:, u]
+        uc_description.name = "Annahmen"
+        st.subheader("{}".format(u))
+        st.table(uc_description)
+
+
+if uc == name_use_case1:
+    table_use_case = table_use_case1
+elif uc == name_use_case2:
+    table_use_case = table_use_case2
+elif uc == name_use_case3:
+    table_use_case = table_use_case3
+else:
+    raise ValueError("Use case not defined.")
+data = table_use_case.loc[:, number_columns]
+text = table_use_case.loc[:, text_columns]
+
+
+tab2_1, tab2_2 = st.tabs(['Neue Geschäftsmodelle', 'Beschreibung'])
+
+with tab2_1:
+    new_bm = [st.radio(label="Auswahl der neuen Geschäftsmodelle", options=number_columns[1:])]
+    bm_to_plot = [number_columns[0]]+new_bm
+    entries = data.index
+
+with tab2_2:
+    bm_description = total_text.loc[["New BM", "Beschreibung neue BM", "Bsp1", "Bsp2", "Bsp3"]]
+
+    for b in total_text.loc["New BM"]:
+        st.subheader("{}".format(b))
+        bm_column = bm_description.loc[:, bm_description.loc["New BM"] == b]
+        st.write(bm_column.loc["Beschreibung neue BM"].iloc[0])
+
+        st.markdown("**Beispiele:**")
+        for bsp in [1,2,3]:
+            bsp_text = bm_column.loc["Bsp"+str(bsp)].iloc[0]
+            if bsp_text != "0":
+                st.write(bsp_text)
+
 
 # Plotting the stuff
 
@@ -37,16 +104,6 @@ layout=go.Layout(
     plot_bgcolor='white',
     yaxis={'side': 'right'},
     autosize=True,
-    # width=800,
-    # height=800,
-    # margin=go.layout.Margin(
-    #     l=50,
-    #     r=50,
-    #     b=50,
-    #     t=50,
-    #     pad=4
-    # )
-
 )
 
 fig = go.Figure(layout=layout)
@@ -65,8 +122,8 @@ for b in bm_to_plot:
           opacity=0.75,
         ))
 
-if st.checkbox("Plot befüllen", True):
-    fig.update_traces(fill='toself')
+# if st.checkbox("Plot befüllen", True):
+fig.update_traces(fill='toself')
 
 fig.update_layout(
     title = "Evaluierungsmatrix",
@@ -81,7 +138,7 @@ fig.update_layout(
       angularaxis = dict(
         linewidth = 1,
         showline=True,
-        linecolor='black'
+        linecolor='darkgrey'
       ),
       radialaxis = dict(
         side = "clockwise",
@@ -97,12 +154,31 @@ fig.update_layout(
 )
 
 
-st.plotly_chart(fig, use_container_width=True)
+tab3_1, tab3_2 = st.tabs(['Evaluierungsmatrix', 'Beschreibung'])
+
+with tab3_1:
+    st.plotly_chart(fig, use_container_width=True)
+
+with tab3_2:
+    bm_elements_description = total_text.loc[["Wirtschaftlichkeit", "Organisation", "Regulatorik", "Technik", "Strategie",
+                                     "Umwelt", "Gesellschaft"], "Text1"]
+    for ele in bm_elements_description.index:
+        bsp_text = bm_elements_description.loc[ele]
+        st.write("**"+ele+"**")
+        st.write(bsp_text)
+
+st.header("Änderungen durch die Implementierung der neuen Geschäftsmodelle")
+
+for b in new_bm:
+    st.subheader("Geschäftsmodell {}".format(b))
+    text_table = text.loc[:, "Text_"+b]
+    text_table.name = "Änderung gegenüber " + uc[9:]
+    st.table(text_table)
 
 st.header("Daten")
 st.write("[Datenquelle](https://docs.google.com/spreadsheets/d/1ZRFcyil83dX7jwTFI37AS8zjvrwBinAMwQ8ZMkQnu8s/edit?usp=sharing)")
 if st.checkbox("Ergebnisse der quantitative Bewertung der Geschäftsmodelle anzeigen", False):
-    st.write(data)
+    st.table(data)
 
 st.header("Autoren")
 from PIL import Image
