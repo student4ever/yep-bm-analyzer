@@ -107,14 +107,20 @@ layout=go.Layout(
 fig = go.Figure(layout=layout)
 
 for b in bm_to_plot:
-    df = data[b]
-    numbers = list(df.values)
-    idx = df.index.tolist()
+    s = data[b]
+
+    # rename the reference case
+    if b==number_columns[0]:
+        s.name = uc[9:]
+        st.write(s)
+
+    numbers = list(s.values)
+    idx = s.index.tolist()
     numbers.append(numbers[0])
     idx.append(idx[0])
 
     fig.add_trace(go.Scatterpolar(
-          name=b,
+          name=s.name,
           r=numbers,
           theta=idx,
           opacity=0.75,
@@ -156,6 +162,31 @@ tab3_1, tab3_2, tab3_3 = st.tabs(['Evaluierungsmatrix', 'Beschreibung', 'Annahme
 
 with tab3_1:
     st.plotly_chart(fig, use_container_width=True)
+    st.subheader("Interpretation der Evaluierungsmatrix")
+
+    legend = pd.Series(
+        index=[
+            "{} hat einen höheren Wert als {} 🔼".format(bm_to_plot[1], uc[9:]),
+            "{} hat einen niedrigern Wert als {} 🔽".format(bm_to_plot[1], uc[9:])
+        ],
+        name="Interpretation"
+    )
+    legend.iloc[0] = "Der Nutzen bei {} überwiegt den Aufwand. Somit stellt die Einführung des neuen Geschäftsmodells eine Verbesserung dar.".format(bm_to_plot[1])
+    legend.iloc[1] = "Der Aufwand bei {} überwiegt den Nutzen. Somit stellt die Einführung des neuen Geschäftsmodells eine Verschlechterung dar.".format(bm_to_plot[1])
+
+    st.table(legend)
+
+    # col1, col2 = st.columns(2)
+    #
+    # with col1:
+    #     st.markdown("{} hat einen **höheren Wert** als {} 🔼".format(bm_to_plot[1], uc[9:]))
+    #     st.markdown("")
+    #     st.markdown("")
+    #     st.markdown("{} hat einen **niedrigern Wert** als {} 🔽".format(bm_to_plot[1], uc[9:]))
+    #
+    # with col2:
+    #     st.markdown("Der Nutzen bei {} überwiegt den Aufwand. Somit stellt die Einführung des neuen Geschäftsmodells eine Verbesserung dar.".format(bm_to_plot[1]))
+    #     st.markdown("Der Aufwand bei {} überwiegt den Nutzen. Somit stellt die Einführung des neuen Geschäftsmodells eine Verschlechterung dar.".format(bm_to_plot[1]))
 
 with tab3_2:
     bm_elements_description = total_text.loc[["Wirtschaftlichkeit", "Organisation", "Regulatorik", "Technik", "Strategie",
