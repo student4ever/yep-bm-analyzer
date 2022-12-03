@@ -34,7 +34,7 @@ columns_with_text = total_data.columns.str.contains('Text_')
 number_columns = total_data.columns[~columns_with_text]
 text_columns = total_data.columns[columns_with_text]
 
-st.header("Interaktive Modellauswahl")
+st.header("Evaluierung der Geschäftsmodelle")
 
 tab1_1, tab1_2 = st.tabs(['Use Cases', 'Beschreibung'])
 
@@ -57,7 +57,6 @@ with tab1_2:
         uc_description.name = "Annahmen"
         st.subheader("{}".format(u))
         st.table(uc_description)
-
 
 if uc == name_use_case1:
     table_use_case = table_use_case1
@@ -91,7 +90,6 @@ with tab2_2:
             bsp_text = bm_column.loc["Bsp"+str(bsp)].iloc[0]
             if bsp_text != "0":
                 st.write(bsp_text)
-
 
 # Plotting the stuff
 
@@ -154,7 +152,7 @@ fig.update_layout(
 )
 
 
-tab3_1, tab3_2 = st.tabs(['Evaluierungsmatrix', 'Beschreibung'])
+tab3_1, tab3_2, tab3_3 = st.tabs(['Evaluierungsmatrix', 'Beschreibung', 'Annahmen'])
 
 with tab3_1:
     st.plotly_chart(fig, use_container_width=True)
@@ -166,6 +164,9 @@ with tab3_2:
         bsp_text = bm_elements_description.loc[ele]
         st.write("**"+ele+"**")
         st.write(bsp_text)
+with tab3_3:
+    st.write("{}".format(total_text.loc["Assumptions"].iloc[0]))
+
 
 st.header("Änderungen durch die Implementierung der neuen Geschäftsmodelle")
 
@@ -182,6 +183,14 @@ if st.checkbox("Ergebnisse der quantitative Bewertung der Geschäftsmodelle anze
 
 st.header("Autoren")
 from PIL import Image
-image = Image.open('authors.PNG')
 
-st.image(image, caption='Arbeitsgruppe 9 - YEP 3. Zyklus')
+# decide if
+# if st.checkbox(label="Zoom in", value=True):
+if st.button(label="Zoom in"):
+    image1 = Image.open('authors1.PNG')
+    image2 = Image.open('authors2.PNG')
+    st.image(image1, caption=None)
+    st.image(image2, caption='Arbeitsgruppe 9 - YEP 3. Zyklus')
+else:
+    image = Image.open('authors.PNG')
+    st.image(image, caption='Arbeitsgruppe 9 - YEP 3. Zyklus')
