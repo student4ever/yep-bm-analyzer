@@ -98,7 +98,7 @@ layout = go.Layout(
     ),
     paper_bgcolor='white',
     plot_bgcolor='white',
-    yaxis={'side': 'right'},
+    # yaxis={'side': 'right'},
     autosize=True,
 )
 
