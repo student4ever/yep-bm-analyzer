@@ -26,9 +26,9 @@ st.write("{}".format(total_text.loc["Introtext"].iloc[0]))
 name_use_case1 = total_data.index.name
 table_use_case1 = total_data.iloc[0:7]
 name_use_case2 = total_data.index[7]
-table_use_case2 = total_data.iloc[8:8+7]
+table_use_case2 = total_data.iloc[8:8 + 7]
 name_use_case3 = total_data.index[15]
-table_use_case3 = total_data.iloc[16:16+7]
+table_use_case3 = total_data.iloc[16:16 + 7]
 
 columns_with_text = total_data.columns.str.contains('Text_')
 number_columns = total_data.columns[~columns_with_text]
@@ -46,7 +46,6 @@ with tab1_2:
     # with st.expander("Annahmen zum Use Case {}".format(uc)):
 
     for u in use_cases:
-
         txt_idx = pd.Index(
             ["Case", "Beispielunternehmen", "Gründung", "Mitarbeiteranzahl", "Markt", "Shareholder Struktur",
              "Wertschöpfungskette", "Umsatz", "Bestehende GM", "Umsatz Kundensegment",
@@ -69,12 +68,11 @@ else:
 data = table_use_case.loc[:, number_columns]
 text = table_use_case.loc[:, text_columns]
 
-
 tab2_1, tab2_2 = st.tabs(['Neue Geschäftsmodelle', 'Beschreibung'])
 
 with tab2_1:
     new_bm = [st.radio(label="Auswahl der neuen Geschäftsmodelle", options=number_columns[1:])]
-    bm_to_plot = [number_columns[0]]+new_bm
+    bm_to_plot = [number_columns[0]] + new_bm
     entries = data.index
 
 with tab2_2:
@@ -86,14 +84,14 @@ with tab2_2:
         st.write(bm_column.loc["Beschreibung neue BM"].iloc[0])
 
         st.markdown("**Beispiele:**")
-        for bsp in [1,2,3]:
-            bsp_text = bm_column.loc["Bsp"+str(bsp)].iloc[0]
+        for bsp in [1, 2, 3]:
+            bsp_text = bm_column.loc["Bsp" + str(bsp)].iloc[0]
             if bsp_text != "0":
                 st.write(bsp_text)
 
 # Plotting the stuff
 
-layout=go.Layout(
+layout = go.Layout(
     font=dict(
         family="Arial",  # Arial, Helvetica, Roboto, IBM Plex Sans
         size=12,
@@ -110,9 +108,8 @@ for b in bm_to_plot:
     s = data[b]
 
     # rename the reference case
-    if b==number_columns[0]:
+    if b == number_columns[0]:
         s.name = uc[9:]
-        st.write(s)
 
     numbers = list(s.values)
     idx = s.index.tolist()
@@ -120,43 +117,42 @@ for b in bm_to_plot:
     idx.append(idx[0])
 
     fig.add_trace(go.Scatterpolar(
-          name=s.name,
-          r=numbers,
-          theta=idx,
-          opacity=0.75,
-        ))
+        name=s.name,
+        r=numbers,
+        theta=idx,
+        opacity=0.75,
+    ))
 
 # if st.checkbox("Plot befüllen", True):
 fig.update_traces(fill='toself')
 
 fig.update_layout(
-    title = "Evaluierungsmatrix",
-    font_size = 15,
+    title="Evaluierungsmatrix",
+    font_size=15,
     # showlegend = True,
     legend=dict(
         orientation="h",
         yanchor="top", y=-0.2,
         xanchor="left", x=0.02),
-    polar = dict(
-      # bgcolor = "rgb(223, 223, 223)",
-      angularaxis = dict(
-        linewidth = 1,
-        showline=True,
-        linecolor='darkgrey'
-      ),
-      radialaxis = dict(
-        side = "clockwise",
-        showline = False,
-        linewidth = 2,
-        gridcolor = "white",
-        gridwidth = 2,
-        dtick=1,
-        range=[0, 5.5],
-      ),
+    polar=dict(
+        # bgcolor = "rgb(223, 223, 223)",
+        angularaxis=dict(
+            linewidth=1,
+            showline=True,
+            linecolor='darkgrey'
+        ),
+        radialaxis=dict(
+            side="clockwise",
+            showline=False,
+            linewidth=2,
+            gridcolor="white",
+            gridwidth=2,
+            dtick=1,
+            range=[0, 5.5],
+        ),
     ),
-    paper_bgcolor = "white"
+    paper_bgcolor="white"
 )
-
 
 tab3_1, tab3_2, tab3_3 = st.tabs(['Evaluierungsmatrix', 'Beschreibung', 'Annahmen'])
 
@@ -169,10 +165,15 @@ with tab3_1:
             "{} hat einen höheren Wert als {} 🔼".format(bm_to_plot[1], uc[9:]),
             "{} hat einen niedrigern Wert als {} 🔽".format(bm_to_plot[1], uc[9:])
         ],
+        dtype=str,
         name="Interpretation"
     )
-    legend.iloc[0] = "Der Nutzen bei {} überwiegt den Aufwand. Somit stellt die Einführung des neuen Geschäftsmodells eine Verbesserung dar.".format(bm_to_plot[1])
-    legend.iloc[1] = "Der Aufwand bei {} überwiegt den Nutzen. Somit stellt die Einführung des neuen Geschäftsmodells eine Verschlechterung dar.".format(bm_to_plot[1])
+    legend.iloc[
+        0] = "Der Nutzen bei {} überwiegt den Aufwand. Somit stellt die Einführung des neuen Geschäftsmodells eine Verbesserung dar.".format(
+        bm_to_plot[1])
+    legend.iloc[
+        1] = "Der Aufwand bei {} überwiegt den Nutzen. Somit stellt die Einführung des neuen Geschäftsmodells eine Verschlechterung dar.".format(
+        bm_to_plot[1])
 
     st.table(legend)
 
@@ -189,26 +190,27 @@ with tab3_1:
     #     st.markdown("Der Aufwand bei {} überwiegt den Nutzen. Somit stellt die Einführung des neuen Geschäftsmodells eine Verschlechterung dar.".format(bm_to_plot[1]))
 
 with tab3_2:
-    bm_elements_description = total_text.loc[["Wirtschaftlichkeit", "Organisation", "Regulatorik", "Technik", "Strategie",
-                                     "Umwelt", "Gesellschaft"], "Text1"]
+    bm_elements_description = total_text.loc[
+        ["Wirtschaftlichkeit", "Organisation", "Regulatorik", "Technik", "Strategie",
+         "Umwelt", "Gesellschaft"], "Text1"]
     for ele in bm_elements_description.index:
         bsp_text = bm_elements_description.loc[ele]
-        st.write("**"+ele+"**")
+        st.write("**" + ele + "**")
         st.write(bsp_text)
 with tab3_3:
     st.write("{}".format(total_text.loc["Assumptions"].iloc[0]))
-
 
 st.header("Änderungen durch die Implementierung der neuen Geschäftsmodelle")
 
 for b in new_bm:
     st.subheader("Geschäftsmodell {}".format(b))
-    text_table = text.loc[:, "Text_"+b]
+    text_table = text.loc[:, "Text_" + b]
     text_table.name = "Änderung gegenüber " + uc[9:]
     st.table(text_table)
 
 st.header("Daten")
-st.write("[Datenquelle](https://docs.google.com/spreadsheets/d/1ZRFcyil83dX7jwTFI37AS8zjvrwBinAMwQ8ZMkQnu8s/edit?usp=sharing)")
+st.write(
+    "[Datenquelle](https://docs.google.com/spreadsheets/d/1ZRFcyil83dX7jwTFI37AS8zjvrwBinAMwQ8ZMkQnu8s/edit?usp=sharing)")
 if st.checkbox("Ergebnisse der quantitative Bewertung der Geschäftsmodelle anzeigen", False):
     st.table(data)
 
