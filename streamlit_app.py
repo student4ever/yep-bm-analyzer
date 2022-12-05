@@ -128,7 +128,7 @@ fig.update_traces(fill='toself')
 
 fig.update_layout(
     title="Evaluierungsmatrix",
-    font_size=15,
+    font_size=12,
     # showlegend = True,
     legend=dict(
         orientation="h",
