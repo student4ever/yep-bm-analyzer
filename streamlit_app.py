@@ -219,7 +219,7 @@ from PIL import Image
 
 # decide if
 # if st.checkbox(label="Zoom in", value=True):
-if st.button(label="Zoom in"):
+if st.button(label="🔍 Zoom in"):
     image1 = Image.open('authors1.PNG')
     image2 = Image.open('authors2.PNG')
     st.image(image1, caption=None)
