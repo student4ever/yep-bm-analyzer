@@ -104,7 +104,7 @@ layout = go.Layout(
 
 fig = go.Figure(layout=layout)
 
-for b in bm_to_plot:
+for b, color in zip(bm_to_plot, ["#8690fa", "#F27F6C"]):
     s = data[b]
 
     # rename the reference case
@@ -121,6 +121,10 @@ for b in bm_to_plot:
         r=numbers,
         theta=idx,
         opacity=0.75,
+        # fillcolor=color,
+        # fill='toself',
+        # mode='lines+markers',
+        # marker=dict(color=color),
     ))
 
 # if st.checkbox("Plot befüllen", True):
@@ -135,7 +139,7 @@ fig.update_layout(
         yanchor="top", y=-0.2,
         xanchor="left", x=0.02),
     polar=dict(
-        # bgcolor = "rgb(223, 223, 223)",
+        bgcolor="#e5ecf6",
         angularaxis=dict(
             linewidth=1,
             showline=True,
