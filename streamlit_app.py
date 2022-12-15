@@ -97,7 +97,7 @@ layout = go.Layout(
         size=12,
     ),
     paper_bgcolor='white',
-    plot_bgcolor='white',
+    plot_bgcolor='#e5ecf6',
     # yaxis={'side': 'right'},
     autosize=True,
 )
@@ -143,10 +143,10 @@ fig.update_layout(
         ),
         radialaxis=dict(
             side="clockwise",
-            showline=False,
-            linewidth=2,
+            showline=True,
+            linewidth=1,
             gridcolor="white",
-            gridwidth=2,
+            gridwidth=1,
             dtick=1,
             range=[0, 5.5],
         ),
