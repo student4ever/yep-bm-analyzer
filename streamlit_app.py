@@ -124,7 +124,7 @@ for b, color in zip(bm_to_plot, ["#8690fa", "#F27F6C"]):
         # fillcolor=color,
         # fill='toself',
         # mode='lines+markers',
-        # marker=dict(color=color),
+        marker=dict(color=color),
     ))
 
 # if st.checkbox("Plot befüllen", True):
